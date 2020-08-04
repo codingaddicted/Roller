@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
@@ -28,7 +24,7 @@ namespace Roller
 		public static bool PaintWall(string wallFilePath, Style style)
 		{
 			var primaryFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string destWallFilePath = Path.Combine(primaryFolder + @"\Microsoft\Windows\Themes", "rollerWallpaper.bmp");
+            string destWallFilePath = Path.Combine(primaryFolder + @"\Microsoft\Windows\Themes", DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".jpg");
 
 			Image img = null;
 			Bitmap imgTemp = null;
@@ -36,7 +32,7 @@ namespace Roller
 			{
 				img = Image.FromFile(Path.GetFullPath(wallFilePath));
 				imgTemp = new Bitmap(img);
-				imgTemp.Save(destWallFilePath, System.Drawing.Imaging.ImageFormat.Bmp);
+				imgTemp.Save(destWallFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
 				Console.WriteLine("Wallpaper saved to primary path: " + destWallFilePath);
 			}
 			catch (Exception e1)
