@@ -43,36 +43,44 @@ namespace Roller
             }
 
             Console.WriteLine();
+
+            var photo = downloadTask.Result;
             // Setting wallpaper
-            if (Roller.PaintWall(downloadTask.Result, Roller.Style.Center))
+            if (Roller.PaintWall(photo, Roller.Style.Center))
             {
-                Console.WriteLine("Successfully changed wallpaper to " + downloadTask.Result + "!");
+                Console.WriteLine("Successfully changed wallpaper to https://picsum.photos/" + downloadTask.Result.PicsumId + "!");
             }
             else
             {
-                Console.WriteLine("Wallpaper change failed :< (" + downloadTask.Result + ")");
+                Console.WriteLine("Wallpaper change failed :< (https://picsum.photos/" + downloadTask.Result.PicsumId + ")");
                 return 4;
             }
 
             try
             {
-                File.Delete(downloadTask.Result);
+                File.Delete(photo.TempPath);
             }
             catch
             {
-                // ignored
+                //ignored
             }
 
             return 0;
         }
 
-        private static async Task<string> DownloadWallpaper(string wallPath)
+
+
+        private static async Task<PicsumPhoto> DownloadWallpaper(string wallPath)
         {
             var tempPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.jpg");
             var client = new WebClient();
             await client.DownloadFileTaskAsync(new Uri(wallPath), tempPath);
 
-            return tempPath;
+            return new PicsumPhoto
+            {
+                TempPath = tempPath,
+                PicsumId = client.ResponseHeaders["picsum-id"]
+            };
         }
     }
 }

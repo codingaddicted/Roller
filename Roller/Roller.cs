@@ -21,16 +21,16 @@ namespace Roller
             Center
 		}
 
-		public static bool PaintWall(string wallFilePath, Style style)
+		public static bool PaintWall(PicsumPhoto photo, Style style)
 		{
 			var primaryFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string destWallFilePath = Path.Combine(primaryFolder + @"\Microsoft\Windows\Themes", DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".jpg");
+            string destWallFilePath = Path.Combine(primaryFolder + @"\Microsoft\Windows\Themes", photo.PicsumId + ".jpg");
 
 			Image img = null;
 			Bitmap imgTemp = null;
 			try
 			{
-				img = Image.FromFile(Path.GetFullPath(wallFilePath));
+				img = Image.FromFile(Path.GetFullPath(photo.TempPath));
 				imgTemp = new Bitmap(img);
 				imgTemp.Save(destWallFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
 				Console.WriteLine("Wallpaper saved to primary path: " + destWallFilePath);
