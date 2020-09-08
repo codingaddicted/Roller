@@ -33,6 +33,7 @@ namespace Roller
 				img = Image.FromFile(Path.GetFullPath(photo.TempPath));
 				imgTemp = new Bitmap(img);
 				imgTemp.Save(destWallFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                img.Dispose();
 				Console.WriteLine("Wallpaper saved to primary path: " + destWallFilePath);
 			}
 			catch (Exception e1)
